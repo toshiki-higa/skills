@@ -1,0 +1,30 @@
+strictDepBuilds: true # [Control lifecycle scripts] block postinstall scripts
+allowBuilds:          # [Control lifecycle scripts] allow to build (comment why each package needs it)
+  esbuild: true       # downloads platform-specific binary
+
+trustPolicy: no-downgrade # [Trust policy] block packages with lower trust than before
+trustPolicyExclude: [] # allow despite trust policy (comment why excluded)
+
+minimumReleaseAge: "1d" # [Supply Chain Security] delay installing new releases
+minimumReleaseAgeStrict: true # [Supply Chain Security] enforce delay
+blockExoticSubdeps: true # [Supply Chain Security] block non-npm deps
+
+configDependencies:
+  '@pnpm/pacquet': <pacquet-version>
+
+saveExact: true
+enableGlobalVirtualStore: true
+
+catalog:
+  vite-plus: &vite-plus <vite-plus-version>
+  '@voidzero-dev/vite-plus-core': <vite-plus-core-version>
+  vitest: <vitest-version> # Must use version bundled with vite-plus
+
+overrides:
+  vite: &vite-plus-core npm:@voidzero-dev/vite-plus-core@<vite-plus-core-version>
+  vitest: <vitest-version>
+
+packageExtensions: # Define implicit deps with reusable version anchors for global virtual store
+  '@voidzero-dev/vite-plus-core@*':
+    dependencies:
+      vite-plus: *vite-plus

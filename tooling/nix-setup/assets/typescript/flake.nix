@@ -1,0 +1,65 @@
+{
+  description = "TypeScript development environment (nodejs + pnpm)";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    agent-skills-nix = {
+      url = "github:Kyure-A/agent-skills-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    skills = {
+      url = "github:toshiki-higa/skills";
+      flake = false;
+    };
+  };
+
+  outputs =
+    {
+      nixpkgs,
+      flake-utils,
+      agent-skills-nix,
+      skills,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+        agentLib = agent-skills-nix.lib.agent-skills;
+        hook =
+          sources: allowlist:
+          let
+            catalog = agentLib.discoverCatalog sources;
+            selection = agentLib.selectSkills { inherit catalog sources allowlist; };
+            bundle = agentLib.mkBundle { inherit pkgs selection; };
+            targets.agents = agentLib.defaultLocalTargets.agents // {
+              enable = true;
+            };
+          in
+          agentLib.mkShellHook { inherit pkgs bundle targets; };
+      in
+      {
+        devShells.default = pkgs.mkShell {
+          packages = [
+            pkgs.nodejs_24
+            pkgs.pnpm
+          ];
+          shellHook = ''
+            # Install selected skills into .agents/skills (project-local).
+            ${hook { skills = { path = skills; }; } [
+              "lang/typescript-practice"
+            ]}
+            # Keep pnpm store/bin inside the project.
+            export PNPM_HOME="$PWD/.pnpm"
+            export PATH="$PNPM_HOME:$PATH"
+            # Install deps only when lockfile is newer than the last install.
+            if [ -f pnpm-lock.yaml ] && { [ ! -f node_modules/.pnpm/lock.yaml ] || [ pnpm-lock.yaml -nt node_modules/.pnpm/lock.yaml ]; }; then
+              echo "Installing dependencies..."
+              pnpm install --frozen-lockfile
+            fi
+          '';
+        };
+      }
+    );
+}
