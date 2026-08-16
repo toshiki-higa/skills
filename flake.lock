@@ -81,6 +81,22 @@
         "type": "github"
       }
     },
+    "impeccable": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786845798,
+        "narHash": "sha256-J5f6p7epIXSgoLxaUNBcdx8bddH90gBsb7GWz5AigFM=",
+        "owner": "pbakaus",
+        "repo": "impeccable",
+        "rev": "36457e191ffbfaefd8f31c70318d048e3881cd6b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pbakaus",
+        "repo": "impeccable",
+        "type": "github"
+      }
+    },
     "mizchi-skills": {
       "flake": false,
       "locked": {
@@ -150,6 +166,7 @@
       "inputs": {
         "agent-browser": "agent-browser",
         "agent-skills-nix": "agent-skills-nix",
+        "impeccable": "impeccable",
         "mizchi-skills": "mizchi-skills",
         "moonbit": "moonbit",
         "nixpkgs": "nixpkgs",

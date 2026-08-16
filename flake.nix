@@ -23,6 +23,10 @@
       url = "github:mizchi/skills";
       flake = false;
     };
+    impeccable = {
+      url = "github:pbakaus/impeccable";
+      flake = false;
+    };
   };
 
   outputs =
@@ -51,6 +55,11 @@
           input = "mizchi-skills";
           subdir = "tooling/ast-grep-practice";
           idPrefix = "tooling";
+        };
+        impeccable = {
+          input = "impeccable";
+          subdir = "plugin/skills";
+          idPrefix = "ui";
         };
       };
       catalog = agentLib.discoverCatalog sources;
