@@ -18,6 +18,6 @@ direnv allow
 | `typescript` | Node / pnpm |
 | `moonbit` | MoonBit |
 
-2. Edit `hook` in `flake.nix`: sources (which repos) and allowlist (which skill IDs). Extra skill repos are another `flake = false` input + a `hook` source entry.
+2. Edit `selectedSkills` in `flake.nix`. Use each skill's repository-relative path (`<group>/<skill>`); the template derives grouped sources and skill IDs automatically. Extra skill repositories need another `flake = false` input and a corresponding source mapping.
 
 3. Add `.direnv/`, `.agents/skills/`, `.pnpm/` into `.gitignore`

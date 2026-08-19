@@ -27,17 +27,22 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         agentLib = agent-skills-nix.lib.agent-skills;
-        hook =
-          sources: allowlist:
-          let
-            catalog = agentLib.discoverCatalog sources;
-            selection = agentLib.selectSkills { inherit catalog sources allowlist; };
-            bundle = agentLib.mkBundle { inherit pkgs selection; };
-            targets.agents = agentLib.defaultLocalTargets.agents // {
-              enable = true;
-            };
-          in
-          agentLib.mkShellHook { inherit pkgs bundle targets; };
+        selectedSkills = [
+          "lang/typescript-practice"
+        ];
+        sources = pkgs.lib.genAttrs
+          (pkgs.lib.unique (map builtins.dirOf selectedSkills))
+          (group: { path = skills; subdir = group; });
+        selection = agentLib.selectSkills {
+          inherit sources;
+          catalog = agentLib.discoverCatalog sources;
+          allowlist = map builtins.baseNameOf selectedSkills;
+        };
+        skillsHook = agentLib.mkShellHook {
+          inherit pkgs;
+          bundle = agentLib.mkBundle { inherit pkgs selection; };
+          targets.agents = agentLib.defaultLocalTargets.agents // { enable = true; };
+        };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -47,9 +52,7 @@
           ];
           shellHook = ''
             # Install selected skills into .agents/skills (project-local).
-            ${hook { skills = { path = skills; }; } [
-              "lang/typescript-practice"
-            ]}
+            ${skillsHook}
             # Keep pnpm store/bin inside the project.
             export PNPM_HOME="$PWD/.pnpm"
             export PATH="$PNPM_HOME:$PATH"
