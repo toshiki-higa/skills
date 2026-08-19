@@ -10,43 +10,65 @@ nix eval .#catalogIds --json | jq -r '.[]' | sort
 
 ## Install skills
 
-Use `agent-skills-nix` in the project's `flake.nix`:
+Add the following to the project's `flake.nix`:
 
 ```nix
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    agent-skills-nix.url = "github:Kyure-A/agent-skills-nix";
+    flake-utils.url = "github:numtide/flake-utils";
+    agent-skills-nix = {
+      url = "github:Kyure-A/agent-skills-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     skills = {
       url = "github:toshiki-higa/skills";
       flake = false;
     };
   };
 
-  outputs = { nixpkgs, agent-skills-nix, skills, ... }:
-    let
-      system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
-      lib = agent-skills-nix.lib.agent-skills;
-      sources = { skills = { path = skills; }; };
-      catalog = lib.discoverCatalog sources;
-      selection = lib.selectSkills {
-        inherit catalog sources;
-        allowlist = [ "tooling/nix-setup" ];
-      };
-      bundle = lib.mkBundle { inherit pkgs selection; };
-    in {
-      devShells.${system}.default = pkgs.mkShell {
-        shellHook = lib.mkShellHook {
-          inherit pkgs bundle;
-          targets.agents = lib.defaultLocalTargets.agents // { enable = true; };
+  outputs =
+    {
+      nixpkgs,
+      flake-utils,
+      agent-skills-nix,
+      skills,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+        agentLib = agent-skills-nix.lib.agent-skills;
+        selectedSkills = [
+          "lang/typescript-practice"
+        ];
+        sources = pkgs.lib.genAttrs
+          (pkgs.lib.unique (map builtins.dirOf selectedSkills))
+          (group: { path = skills; subdir = group; });
+        selection = agentLib.selectSkills {
+          inherit sources;
+          catalog = agentLib.discoverCatalog sources;
+          allowlist = map builtins.baseNameOf selectedSkills;
         };
-      };
-    };
+        skillsHook = agentLib.mkShellHook {
+          inherit pkgs;
+          bundle = agentLib.mkBundle { inherit pkgs selection; };
+          targets.agents = agentLib.defaultLocalTargets.agents // { enable = true; };
+        };
+      in
+      {
+        devShells.default = pkgs.mkShell {
+          shellHook = ''
+            { ${skillsHook} } > /dev/null
+          '';
+        };
+      }
+    );
 }
 ```
 
-`nix develop` installs the selected skills into the project-local `.agents/skills` directory.
+Set `selectedSkills` to the `<group>/<skill>` paths to install. `nix develop` installs them into `.agents/skills`.
 
 ## Update installed skills
 
@@ -55,4 +77,4 @@ nix flake update skills # update the hub only
 nix develop             # refresh .agents/skills
 ```
 
-Add other skill repositories as `flake = false` inputs and include them in `sources`. The installed set still follows `allowlist`; updating does not enable new skills automatically.
+For other repositories, add a `flake = false` input and include it in `sources`.
