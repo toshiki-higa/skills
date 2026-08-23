@@ -12,7 +12,7 @@
       flake = false;
     };
     moonbit = {
-      url = "github:moonbitlang/skills/automation/sync-upstream-skills";
+      url = "github:moonbitlang/skills";
       flake = false;
     };
     quint = {

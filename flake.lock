@@ -3,11 +3,11 @@
     "agent-browser": {
       "flake": false,
       "locked": {
-        "lastModified": 1786403026,
-        "narHash": "sha256-UdCBSe7w0ZgJimB7ixGcaabJjH3m6O0vB1SV9n9apfE=",
+        "lastModified": 1787420080,
+        "narHash": "sha256-FtB7AXqrROZs8UZv8UtxtofZwj4VlEERRFhEIXsZ3Y0=",
         "owner": "vercel-labs",
         "repo": "agent-browser",
-        "rev": "548b159b30eef119ccf6846c8bc807d0eaa3f6f8",
+        "rev": "f9a6cc34212340dad62b114559f7a306c4be0707",
         "type": "github"
       },
       "original": {
@@ -100,11 +100,11 @@
     "impeccable": {
       "flake": false,
       "locked": {
-        "lastModified": 1786845798,
-        "narHash": "sha256-J5f6p7epIXSgoLxaUNBcdx8bddH90gBsb7GWz5AigFM=",
+        "lastModified": 1787356750,
+        "narHash": "sha256-HqWNpH2R9vhFvBFt9QBXAUwSbjV26bfePMBr3uokX4Y=",
         "owner": "pbakaus",
         "repo": "impeccable",
-        "rev": "36457e191ffbfaefd8f31c70318d048e3881cd6b",
+        "rev": "56f44523f76efdcec813e67b38ee550e49b16f48",
         "type": "github"
       },
       "original": {
@@ -132,16 +132,15 @@
     "moonbit": {
       "flake": false,
       "locked": {
-        "lastModified": 1786757656,
+        "lastModified": 1787205668,
         "narHash": "sha256-EmpA7MmpvhH5VQa1IvhfgHxpM59Q40v9fVWGahft5pg=",
         "owner": "moonbitlang",
         "repo": "skills",
-        "rev": "07e53e9cfef38b6843839bc506395b226e026e64",
+        "rev": "0d956f0ecd0b09ce16a0c341780998473d251db4",
         "type": "github"
       },
       "original": {
         "owner": "moonbitlang",
-        "ref": "automation/sync-upstream-skills",
         "repo": "skills",
         "type": "github"
       }
@@ -165,11 +164,11 @@
     "quint": {
       "flake": false,
       "locked": {
-        "lastModified": 1784554291,
-        "narHash": "sha256-Wj4ytTHMaEdu2lEP8Fbh9moXQtsKmLikG5hgf2PNEsE=",
+        "lastModified": 1787234128,
+        "narHash": "sha256-83qNsH6SgkT1/dOWMVxC6CuOvBxMiozJapngZvPXOKg=",
         "owner": "quint-co",
         "repo": "quint",
-        "rev": "4e6a580ef40d96914fcebe4e1b4ae95f34c2a75e",
+        "rev": "6fb2924e00707cef6dbc5e30db606d555c447123",
         "type": "github"
       },
       "original": {
