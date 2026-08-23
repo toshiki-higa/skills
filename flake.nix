@@ -27,6 +27,10 @@
       url = "github:pbakaus/impeccable";
       flake = false;
     };
+    daisyui = {
+      url = "github:saadeghi/daisyui";
+      flake = false;
+    };
   };
 
   outputs =
@@ -59,6 +63,11 @@
         impeccable = {
           input = "impeccable";
           subdir = "plugin/skills";
+          idPrefix = "ui";
+        };
+        daisyui = {
+          input = "daisyui";
+          subdir = "skills/daisyui";
           idPrefix = "ui";
         };
       };

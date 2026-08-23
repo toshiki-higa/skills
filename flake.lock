@@ -60,6 +60,22 @@
         "type": "github"
       }
     },
+    "daisyui": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787429630,
+        "narHash": "sha256-e5Uoa9pPkHigx8r/Hd4byZZYLALLyCq5lSIuoGdf3Uo=",
+        "owner": "saadeghi",
+        "repo": "daisyui",
+        "rev": "c6e1800bc15ab0287b8c2b802c126ccee6361beb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "saadeghi",
+        "repo": "daisyui",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -166,6 +182,7 @@
       "inputs": {
         "agent-browser": "agent-browser",
         "agent-skills-nix": "agent-skills-nix",
+        "daisyui": "daisyui",
         "impeccable": "impeccable",
         "mizchi-skills": "mizchi-skills",
         "moonbit": "moonbit",
