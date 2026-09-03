@@ -54,8 +54,8 @@
             # Install selected skills into .agents/skills (project-local).
             ${skillsHook}
             # Resolve project-local bins/modules for pnpm's global virtual store.
-            export PATH="$PWD/node_modules/.bin:$PATH"
             export NODE_PATH="$PWD/node_modules"
+            export PATH="$NODE_PATH/.bin:$PATH"
             # Install deps only when lockfile is newer than the last install.
             if [ -f pnpm-lock.yaml ] && { [ ! -f node_modules/.pnpm/lock.yaml ] || [ pnpm-lock.yaml -nt node_modules/.pnpm/lock.yaml ]; }; then
               echo "Installing dependencies..."
