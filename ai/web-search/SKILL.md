@@ -14,7 +14,7 @@ mcpx info <server> <tool>
 
 ## How to use
 
-- Explore Internet (common case): `mcpx call exa web_search_exa {...require variables}`
+- Explore Internet (common case): `mcpx call parallel-search web_search {...require variables}`
 - Find academic papers in arxiv: `mcpx call alphaxiv discover_papers {...require variables}`
 - Find reference implementations: `mcpx call grep_app searchGitHub {...require variables}`
 - Find Library Documents:
