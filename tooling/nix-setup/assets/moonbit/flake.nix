@@ -40,10 +40,12 @@
         selectedSkills = [
           "lang/moonbit-agent-guide"
         ];
-        selection = agentLib.selectSkills {
-          inherit (skills) sources catalog;
-          allowlist = selectedSkills;
-        };
+        selection = pkgs.lib.mapAttrs'
+          (id: skill: pkgs.lib.nameValuePair (builtins.baseNameOf id) (skill // { id = builtins.baseNameOf id; }))
+          (agentLib.selectSkills {
+            inherit (skills) sources catalog;
+            allowlist = selectedSkills;
+          });
         skillsHook = agentLib.mkShellHook {
           inherit pkgs;
           bundle = agentLib.mkBundle { inherit pkgs selection; };
