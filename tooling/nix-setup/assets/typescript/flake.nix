@@ -10,7 +10,8 @@
     };
     skills = {
       url = "github:toshiki-higa/skills";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.agent-skills-nix.follows = "agent-skills-nix";
     };
   };
 
@@ -30,13 +31,9 @@
         selectedSkills = [
           "lang/typescript-practice"
         ];
-        sources = pkgs.lib.genAttrs
-          (pkgs.lib.unique (map builtins.dirOf selectedSkills))
-          (group: { path = skills; subdir = group; });
         selection = agentLib.selectSkills {
-          inherit sources;
-          catalog = agentLib.discoverCatalog sources;
-          allowlist = map builtins.baseNameOf selectedSkills;
+          inherit (skills) sources catalog;
+          allowlist = selectedSkills;
         };
         skillsHook = agentLib.mkShellHook {
           inherit pkgs;

@@ -6,15 +6,20 @@
     flake-utils.url = "github:numtide/flake-utils";
 
     # Pin/Bump to a known-working rev deliberately. HEAD sometimes depends on packages marked broken.
-    moonbit-overlay.url = "github:moonbit-community/moonbit-overlay/50118f5c3c0298b5cb17cc6f1c346165801014c8";
+    moonbit-overlay = {
+      url = "github:moonbit-community/moonbit-overlay/9a01af90b775869a76b1675a630e7fa0e3135255";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     agent-skills-nix = {
       url = "github:Kyure-A/agent-skills-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     skills = {
       url = "github:toshiki-higa/skills";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.agent-skills-nix.follows = "agent-skills-nix";
     };
   };
 
@@ -35,13 +40,9 @@
         selectedSkills = [
           "lang/moonbit-agent-guide"
         ];
-        sources = pkgs.lib.genAttrs
-          (pkgs.lib.unique (map builtins.dirOf selectedSkills))
-          (group: { path = skills; subdir = group; });
         selection = agentLib.selectSkills {
-          inherit sources;
-          catalog = agentLib.discoverCatalog sources;
-          allowlist = map builtins.baseNameOf selectedSkills;
+          inherit (skills) sources catalog;
+          allowlist = selectedSkills;
         };
         skillsHook = agentLib.mkShellHook {
           inherit pkgs;
@@ -52,7 +53,14 @@
       {
         devShells.default = pkgs.mkShell {
           packages = [
-            moonbit-overlay.packages.${system}.moon-patched_latest
+            # Generate core metadata for `moon ide doc`.
+            (moonbit-overlay.packages.${system}.moonbit_latest.overrideAttrs (old: {
+              buildCommand = old.buildCommand + ''
+                $out/bin/moon -C $out/lib/core check --target all --warn-list -a
+              '';
+            }))
+            # `moon prove` uses bundled Why3 and an external SMT solver.
+            pkgs.z3
           ];
           shellHook = ''
             # Install selected skills into .agents/skills (project-local).
