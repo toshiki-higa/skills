@@ -23,6 +23,10 @@
       url = "github:mizchi/skills";
       flake = false;
     };
+    kitlangton-skills = {
+      url = "github:kitlangton/skills";
+      flake = false;
+    };
     impeccable = {
       url = "github:pbakaus/impeccable";
       flake = false;
@@ -59,6 +63,11 @@
           input = "mizchi-skills";
           subdir = "tooling/ast-grep-practice";
           idPrefix = "tooling";
+        };
+        effect = {
+          input = "kitlangton-skills";
+          subdir = "skills/effect";
+          idPrefix = "lang";
         };
         impeccable = {
           input = "impeccable";
