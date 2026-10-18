@@ -27,6 +27,10 @@
       url = "github:kitlangton/skills";
       flake = false;
     };
+    foldkit = {
+      url = "github:foldkit/foldkit";
+      flake = false;
+    };
     impeccable = {
       url = "github:pbakaus/impeccable";
       flake = false;
@@ -69,6 +73,11 @@
           subdir = "skills/effect";
           idPrefix = "lang";
         };
+        foldkit = {
+          input = "foldkit";
+          subdir = "skills";
+          idPrefix = "lang";
+        };
         impeccable = {
           input = "impeccable";
           subdir = "plugin/skills";
@@ -80,7 +89,9 @@
           idPrefix = "ui";
         };
       };
-      catalog = agentLib.discoverCatalog sources;
+      catalog =
+        (import ./rename.nix { inherit lib; })
+          (agentLib.discoverCatalog sources);
     in
     {
       inherit sources catalog;

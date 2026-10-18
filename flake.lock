@@ -76,6 +76,22 @@
         "type": "github"
       }
     },
+    "foldkit": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792195698,
+        "narHash": "sha256-Diu6jounOrKZFAvmi5cdy0Nx27CSbjqcvv1t0Ae0Hng=",
+        "owner": "foldkit",
+        "repo": "foldkit",
+        "rev": "606ca39eaf1cb92659d83aaaac3512b47cba25a2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "foldkit",
+        "repo": "foldkit",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -198,6 +214,7 @@
         "agent-browser": "agent-browser",
         "agent-skills-nix": "agent-skills-nix",
         "daisyui": "daisyui",
+        "foldkit": "foldkit",
         "impeccable": "impeccable",
         "kitlangton-skills": "kitlangton-skills",
         "mizchi-skills": "mizchi-skills",

@@ -70,10 +70,6 @@ Add the following to the project's `flake.nix`:
 
 Set `selectedSkills` to the catalog IDs (`<group>/<skill>`) to install. `nix develop` installs them into `.agents/skills/<skill>`, including skills from external repositories. Use this hub as a flake input (not `flake = false`) so its `sources` and `catalog` include those external skills.
 
-### Effect
-
-`lang/effect` comes from [kitlangton/skills](https://github.com/kitlangton/skills) (MIT). It covers production TypeScript with **Effect v4**, including services/layers, schemas, configuration, scheduling, caching, streams, HTTP clients, and testing. Its `references/` directory is included with the skill; it is not an Effect v3 guide.
-
 ## Update installed skills
 
 ```sh
